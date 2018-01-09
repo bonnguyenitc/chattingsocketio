@@ -17,7 +17,7 @@ $(document).ready(function() {
 	});
 });
 
-var socket  = io.connect('http://localhost:3000/');
+var socket  = io.connect('http://chattingsocketio-chattingsocketio.7e14.starter-us-west-2.openshiftapps.com/');
 //get all user
 var flag_user = false;
 socket.on("online",function (data) {
