@@ -1,0 +1,203 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('chatof:server');
+var http = require('http');
+
+
+
+
+
+const { Pool, Client } = require('pg');
+
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'chatting',
+  password: '0546533836',
+  port: 54321,
+});
+
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+
+
+io.on('connection', function (socket) {
+  //get user
+  (async () => {
+    const client = await pool.connect()
+    try {
+      const res = await client.query('SELECT * FROM online WHERE status=true')
+      socket.emit('online', res.rows);
+      //console.log(res.rows[0])
+    } finally {
+      client.release()
+    }
+  })().catch(e => console.log(e.stack));
+
+
+  // connection.query('SELECT * FROM `online`', function (error, results, fields) {
+  //   //console.log(results);
+  //   socket.emit('online', results);
+  // });
+  //get message
+  // tạm ẩn
+  // (async () => {
+  //   const client = await pool.connect()
+  //   try {
+  //     const res = await client.query('SELECT * FROM message')
+  //     socket.emit('messageAll', res.rows);
+  //     console.log(res.rows[0])
+  //   } finally {
+  //     client.release()
+  //   }
+  // })().catch(e => console.log(e.stack));
+
+
+  // connection.query('SELECT * FROM `message`', function (error, results, fields) {
+  //   //console.log(results);
+  //   socket.emit('messageAll', results);
+  // });
+  //user
+  socket.on('join', function (data) {
+    //console.log(data);
+
+    // (async () => {
+    //     const client = await pool.connect()
+    //     try {
+    //       const res = await client.query('SELECT * FROM online WHERE name = ($1)', [data])
+    //       //socket.broadcast.emit('listUser', data);
+          
+    //       if(res.rows[0].name){
+    //         //console.log("aaaaaaaa " + res.rows[0].name);
+    //         socket.broadcast.emit('loi',false);
+            
+    //       }else{
+    //         socket.broadcast.emit('loi',true);
+    //       }
+    //     } finally {
+    //       client.release()
+    //     }
+    //   })().catch(e => {
+    //           console.log("qqqqqqqq"+e.stack);
+              
+    //   });
+
+
+
+    (async () => {
+        const client = await pool.connect()
+        try {
+          const res = await client.query('INSERT INTO online (name, status) VALUES ($1, true)', [data])
+          socket.broadcast.emit('listUser', data);
+          //console.log(res.rows[0]);
+        } finally {
+          client.release()
+        }
+      })().catch(e => {
+          console.log("qqqqqqqq"+e.stack);
+    })
+       
+         //connection.query('INSERT INTO `online` (name) VALUES ("'+ data +'")');    
+         //socket.broadcast.emit('listUser', data);
+       
+        
+  
+
+
+      
+  });
+  
+  //massage
+  socket.on('message',(message)=>{
+      socket.broadcast.emit('messages', message);
+  });
+
+  socket.on('logout',(user)=>{
+    socket.broadcast.emit('logout', user);
+  });
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

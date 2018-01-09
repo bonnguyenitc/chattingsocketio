@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  	<meta charset="utf-8" />
+  	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  	<meta name="description" content="Chatting Socket" />
+  	<link rel="icon" href="/images/Blue.ico" type="image/x-icon">
+    <meta name="author" content="BNG" />
+  	<title>Chatting Socket</title>
+  	<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.css"  />
+  	<link type="text/css" rel="stylesheet" href="/stylesheets/mystyle.css" />
+</head>
+<body>
+	<% if(user == ''){ %>
+	<div class="modal fade" id="myModal" role="dialog"> 
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Nhập NICKNAME vào đây xem nào</h4>
+				</div>
+				<div class="modal-body">
+					<div id="error_msg"></div>
+					<div class="input-group">
+						  <span class="input-group-addon" id="sizing-addon2">NICKNAME </span>
+						  <input type="text" class="form-control" id="txtUser" placeholder="Vui lòng nhập họ và tên" aria-describedby="sizing-addon2">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnAdd1" class="btn btn-primary">Kiểm tra tên</button>
+					<button type="button" id="btnAdd" class="btn btn-primary" disabled>Thêm</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<%
+	} %>
+
+<div class="container">
+ 	<div class="row " style="padding-top:40px;">
+        <div class="col-md-3">
+           	<div class="panel panel-danger">
+              	<div class="panel-heading">
+                 	Thành viên đang Online
+              	</div>
+              	<div class="panel-body">
+                 	<ul class="media-list" id="listUser" onlined="<%=user%>" >
+                    	
+                 	</ul>
+              	</div>
+           	</div>
+        </div>
+        <div class="col-md-9 ">
+           	<div class="panel panel-danger okok">
+              	<div class="panel-heading">
+                 	Nội dung Chat
+              	</div>
+              	<div class="panel-body">
+                 	<ul class="media-list" id="listMessage">
+                    	
+                 	</ul>
+              	</div>
+			   </div>
+			   <div class="panel-footer">
+				<div class="input-group">
+				   <input type="text" class="form-control" id="txtMessage" placeholder="Vui lòng nhập nội dung tin nhắn" />
+				   <span class="input-group-btn">
+					   <button class="btn btn-info" id="btnSend" type="button">Gửi</button>
+				   </span>
+				</div>
+			 </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script type="text/javascript" src="/javascripts/myscript.js" ></script>
+</body>
+</html>

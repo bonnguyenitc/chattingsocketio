@@ -1,0 +1,70 @@
+body {
+   font-family:Verdana;
+}
+.modal {
+  text-align: center;
+}
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal-backdrop.in {
+    filter: alpha(opacity=50);
+    opacity: 10;
+}
+.media-bodyyy {
+  text-align: right;
+}
+.media-image {
+  text-align: center;
+}
+.okok{
+  height: 500px;
+  overflow: scroll;
+  overflow-y: auto;
+}
+ul#listUser {
+  height: 500px;
+  overflow: scroll;
+  overflow-y: auto;
+}
+.panel-heading{
+  color : red;
+  font-size:  15px;
+}
+.text-muted{
+  color : green;
+}
+.media-bodyyy{
+  background: #4080ff;
+  border: 1px solid #8c8787;
+  border-radius: 25px;
+  padding: 10px;
+  color: white;
+}
+.msgf{
+  background: #badbf3;
+  border: 1px solid #8c8787;
+  border-radius: 25px;
+  padding: 10px;
+  color: #4b4f56;
+}
+.user{
+  text-align: center;
+}
+body{
+  background: #4b4f56;
+}
+#status{
+  color : green;
+}
